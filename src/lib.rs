@@ -1,6 +1,7 @@
+use wasm_bindgen::prelude::*;
 use piccolo::{Lua, Callback, Closure, CallbackReturn, StaticError, Value, Executor};
 
-pub fn func()-> Result<(), StaticError>{
+fn func()-> Result<(i32, i32, i32), StaticError>{
         let mut lua = Lua::core();
 
     lua.try_enter(|ctx| {
@@ -29,12 +30,17 @@ pub fn func()-> Result<(), StaticError>{
     })?;
 
     let (a,b,c) = lua.execute::<(i32, i32, i32)>(&executor)?;
-    println!("{}, {}, {}",a,b,c);
-    Ok(())
+    Ok((a, b, c))
 }
 
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
+}
+
+#[wasm_bindgen]
+pub fn wasm_func(){
+    let (a,b,c) = func().unwrap();
+    gloo::console::log!(format!("{},{},{}",a,b,c));
 }
 
 #[cfg(test)]
