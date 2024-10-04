@@ -10,8 +10,27 @@
             wasm_func();
         });
     </script>
+
+    <script src="./codemirror5/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="./codemirror5/lib/codemirror.css">
+    <!-- <script src=" /mode/javascript/javascript.js"></script> -->
+    <script src="./codemirror5/mode/lua/lua.js"></script>
 </head>
 <body>
     <h1>Lua on your browser</h1>
+
+    <div id="my_text_area">Lua code area</div>
+    <script>
+    var myCodeMirror = CodeMirror(document.body, {
+      value: `
+local a, b, c = callback(1, 2)
+assert(a == 1 and b == 2 and c == 42)
+local d, e, f = callback(3, 4)
+assert(d == 3 and e == 4 and f == 42)
+return a,b,c
+`,
+      mode:  "lua"
+    });
+    </script>
 </body>
 </html>
