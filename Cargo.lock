@@ -451,8 +451,12 @@ name = "lua_on_your_browser2"
 version = "0.1.0"
 dependencies = [
  "gloo",
+ "gloo-utils",
+ "js-sys",
  "piccolo",
+ "serde",
  "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
