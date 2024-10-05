@@ -1,4 +1,5 @@
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
 use piccolo::{Lua, Callback, Closure, CallbackReturn, StaticError, Value, Executor};
 // web-sys
 use web_sys::HtmlElement;
@@ -10,6 +11,7 @@ use serde::Serialize;
 
 use std::io::Cursor;
 use js_sys;
+use js_sys::Reflect;
 
 
 #[derive(Serialize)]
@@ -73,15 +75,35 @@ pub fn set_highlight(){
     let options = JsValue::from_serde(&data).unwrap();
     // CodeMirrorの初期化を呼び出す
     let js_value =fromTextArea(&text_area, &options);
-    if let Some(function) = js_value.dyn_into::<js_sys::Function>().ok() {
+
+    gloo::console::log!(js_value.clone());
+    // ここまでOK
+    let prototype = Reflect::get_prototype_of(&js_value).unwrap();
+    let method = if let Ok(v) = Reflect::get(
+        &prototype,
+        &JsValue::from_str("getValue"),
+    ){
+        gloo::console::log!("getValue success!");
+        gloo::console::log!(v.clone());
+        gloo::console::log!(prototype.clone());
+        v
+    }else{
+        gloo::console::log!("getValue failure!");
+        JsValue::from_str("error!")
+    };
+    if let Some(function) = method.dyn_into::<js_sys::Function>().ok() {
         // JavaScript関数を呼び出す
-        let this = JsValue::NULL;
+        gloo::console::log!("JsValue is a function!");
+        let this = js_value.into();
         // let args = vec![
         //     JsValue::from_str("Hello"),
         //     JsValue::from_str("from Rust!"),
         // ];
-        function.call0(&this).unwrap();
-        // function.call2(&this, &args[0], &args[1]).unwrap();
+        if let Ok(v) = function.call0(&this){
+            gloo::console::log!(v);
+        } else {
+            gloo::console::log!("somethig wrong");
+        }
     } else {
         gloo::console::log!("JsValue is not a function!");
         // console::log_1(&JsValue::from_str("JsValue is not a function!"));
