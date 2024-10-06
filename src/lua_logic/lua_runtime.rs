@@ -32,7 +32,7 @@ pub fn lua_runtime(code:String)-> Result<(i32, i32, i32), StaticError>{
     let cursor = Cursor::new(code);
     let mut lua = Lua::core();
     lua.try_enter(|ctx| {
-        let print_console = Callback::from_fn(&ctx, |_, _, mut stack| {
+        let print_console = Callback::from_fn(&ctx, |_, _, stack| {
             let mut print_string:Vec<String>= Vec::new();
             for i in &stack{
                 match i{

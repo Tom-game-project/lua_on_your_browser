@@ -85,10 +85,9 @@ impl Component for IndexComponent{
         let callback = self.link.callback(move |_:MouseEvent| PluginState::InitTextArea);
         html!(
             <>
-                <h1 class="text-3xl font-semibold">{"プラグイン"}</h1>
+                <h1 class="text-3xl font-semibold">{"Lua on your browser"}</h1>
                 <div>
                     <button onclick={callback}>{"Run"}</button>
-                    // <button >{"Save"}</button>
                 </div>
                 <div>
                     <textarea id={"lua_code_area"} value={r#"print(os.time())
