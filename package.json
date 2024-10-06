@@ -1,0 +1,14 @@
+{
+  "name": "lua_on_your_browser",
+  "version": "1.0.0",
+  "description": "## Main Projects used",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "wasm-pack build --target web"
+  },
+  "author": "",
+  "license": "ISC"
+}
