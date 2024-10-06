@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lua on your browser</title>
-    <script type="module">
+    <!-- <script type="module">
         import init,{wasm_func, set_highlight} from "./pkg/lua_on_your_browser2.js"
         init().then(()=>{
             wasm_func();
             set_highlight();
         });
+    </script> -->
+    <script type="module">
+    import init from "./pkg/lua_on_your_browser.js"
+    init()
     </script>
-
     <script src="./codemirror5/lib/codemirror.js">
     </script>
     <link rel="stylesheet" href="./codemirror5/lib/codemirror.css">
@@ -19,24 +22,11 @@
     <script src="./codemirror5/mode/lua/lua.js"></script>
 </head>
 <body>
-    <h1>Lua on your browser</h1>
+    <!-- <h1>Lua on your browser</h1> -->
 
-    <textarea id="my_text_area"></textarea>
+    <!-- <textarea id="my_text_area"></textarea>
     <button onclick="set_highlight">set_highlight</button>
     <script type="text/javascript">
-
-//     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("my_text_area"), {
-//       value: `
-// local a, b, c = callback(1, 2)
-// assert(a == 1 and b == 2 and c == 42)
-// local d, e, f = callback(3, 4)
-// assert(d == 3 and e == 4 and f == 42)
-// return a,b,c
-// `,
-//       mode:  "lua",
-//       lineNumbers: true,
-//     });
-//     console.log(myCodeMirror.getValue());
-    </script>
+    </script> -->
 </body>
 </html>
