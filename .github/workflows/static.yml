@@ -30,9 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-        fetch-depth: 0
-        submodules: true
-
+        submodules: 'recursive'
       - name: Cache cargo registry
         uses: actions/cache@v3
         with:
