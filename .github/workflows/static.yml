@@ -51,10 +51,10 @@ jobs:
       - name: Build Page Contents
         run: npm run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: |
-          ./
+          .
           !./target
           !./pkg
           !./src
