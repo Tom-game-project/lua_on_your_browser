@@ -55,13 +55,13 @@ jobs:
         with:
           name: lua_on_your_browser
           path: |
-          /
-          !./target
-          !./pkg
-          !./src
-          !./tests
-          !./codemirror5
-          !./webpack.config.js
+            ./
+            !./target
+            !./pkg
+            !./src
+            !./tests
+            !./codemirror5
+            !./webpack.config.js
 
   deploy:
     needs: build
