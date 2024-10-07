@@ -44,8 +44,15 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
+      # - name: Install wasm-pack
+      #   run: cargo install wasm-pack
       - name: Install wasm-pack
-        run: cargo install wasm-pack
+        run: |
+          if ! command -v wasm-pack > /dev/null; then
+            cargo install wasm-pack
+          else
+            echo "wasm-pack is already installed, skipping installation"
+          fi
       - name: Install npm tools
         run: npm install
       - name: Build Page Contents
