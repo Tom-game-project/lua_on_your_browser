@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build-wasm":"wasm-pack build --target web",
-    "build": "mkdir -p ./dist && npm run build-wasm && npm run bundle && npm run copy-codemirror",
+    "build": "mkdir -p ./dist && npm run build-wasm && npm run bundle && npm run copy-codemirror && npm run copy-html",
     "copy-codemirror":"mkdir dist/codemirror5/lib -p && cp ./codemirror5/lib/* dist/codemirror5/lib && mkdir dist/codemirror5/mode/lua -p && cp ./codemirror5/mode/lua/* dist/codemirror5/mode/lua",
     "copy-html":"cp index.html ./dist/index.html",
     "clean":"rm -rf ./dist/",
