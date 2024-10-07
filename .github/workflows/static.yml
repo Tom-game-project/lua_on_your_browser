@@ -61,14 +61,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # name: lua_on_your_browser
-          path: |
-            ./
-            !./target
-            !./pkg
-            !./src
-            !./tests
-            !./codemirror5
-            !./webpack.config.js
+          path: ./dist
 
   deploy:
     needs: build
