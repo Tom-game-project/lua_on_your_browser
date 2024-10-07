@@ -11,9 +11,6 @@ pub fn set_plugin_standard(ctx:Context<'_>) -> Table<'_>{
     let callback = Callback::from_fn(
         &ctx,
         |_, _, mut stack|{
-            gloo::console::log!("hello this is test");
-            // let a = CallbackReturn::Return;
-            // Ok(Value::Boolean(true))
             stack.clear();
             let utc_now = Utc::now();
             stack.push_back(
