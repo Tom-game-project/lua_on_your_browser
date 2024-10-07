@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "## Main Projects used",
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
-    "build": "wasm-pack build --target web"
+    "build-wasm":"wasm-pack build --target web",
+    "build": "mkdir -p ./dist && npm run build-wasm && npm run bundle && npm run copy-codemirror && npm run copy-html",
+    "copy-codemirror":"mkdir dist/codemirror5/lib -p && cp ./codemirror5/lib/* dist/codemirror5/lib && mkdir dist/codemirror5/mode/lua -p && cp ./codemirror5/mode/lua/* dist/codemirror5/mode/lua",
+    "copy-html":"cp index.html ./dist/index.html",
+    "clean":"rm -rf ./dist/",
+    "bundle":"webpack --mode production"
+  },
+  "dependencies": {
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   },
   "author": "",
   "license": "ISC"
