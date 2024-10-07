@@ -53,7 +53,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./
+          path: |
+          ./
+          !./target
+          !./pkg
+          !./src
+          !./tests
+          !./codemirror5
+          !./webpack.config.js
 
   deploy:
     needs: build
