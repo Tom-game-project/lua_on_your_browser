@@ -79,11 +79,14 @@ impl Component for IndexComponent{
                     let this = js_value.into();
                     if let Ok(v) = function.call0(&this){ // execute getValue function 
                         // gloo::console::log!(v);
-                        if let Ok(lua_result) = lua_runtime(v.as_string().expect("this is not string"), Arc::clone(&self.stdout)){
-                            let (l_a,l_b,l_c) = lua_result;
-                            gloo::console::log!(format!("return {}, {}, {}", l_a, l_b, l_c));
-                        } else {
-                            gloo::console::log!("some error occured!");
+                        match lua_runtime(v.as_string().expect("this is not string"), Arc::clone(&self.stdout)){
+                            Ok(lua_result) => {
+                                let (l_a,l_b,l_c) = lua_result;
+                                gloo::console::log!(format!("return {}, {}, {}", l_a, l_b, l_c));
+                            }
+                            Err(e)=>{
+                                gloo::console::log!(format!("{:?}", e));
+                            }
                         }
                     } else {
                         gloo::console::log!("somethig wrong");
