@@ -1,3 +1,5 @@
+use std::sync::{Arc, Mutex};
+
 use web_sys::window;
 
 use wasm_bindgen::prelude::*;
@@ -27,27 +29,40 @@ struct CodeMirrorData{
 }
 
 pub enum PluginState{
+    RunLua,
     InitTextArea,
 }
 
 pub struct IndexComponent{
     link:Scope<Self>,
-    codemirror:JsValue
+    codemirror:JsValue,
+    stdout: Arc<Mutex<String>>
+}
+
+impl IndexComponent{
+    fn set_stdout(&mut self){
+        self.stdout = Arc::new(Mutex::new(String::new()));
+    }
 }
 
 impl Component for IndexComponent{
     type Message = PluginState;
     type Properties = ();
+
     fn create(ctx: &Context<Self>) -> Self {
         Self {
             link: ctx.link().clone(),
-            codemirror:JsValue::null()
+            codemirror:JsValue::null(),
+            stdout: Arc::new(Mutex::new(String::new()))
         }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             PluginState::InitTextArea => {
+            }
+            PluginState::RunLua => {
+                self.set_stdout();
                 // pass
                 let js_value = &self.codemirror;
                     let prototype = Reflect::get_prototype_of(&js_value).unwrap();
@@ -62,9 +77,9 @@ impl Component for IndexComponent{
                 if let Some(function) = method.dyn_into::<js_sys::Function>().ok() {
                     // JavaScript関数を呼び出す
                     let this = js_value.into();
-                    if let Ok(v) = function.call0(&this){
+                    if let Ok(v) = function.call0(&this){ // execute getValue function 
                         // gloo::console::log!(v);
-                        if let Ok(lua_result) = lua_runtime(v.as_string().expect("this is not string")){
+                        if let Ok(lua_result) = lua_runtime(v.as_string().expect("this is not string"), Arc::clone(&self.stdout)){
                             let (l_a,l_b,l_c) = lua_result;
                             gloo::console::log!(format!("return {}, {}, {}", l_a, l_b, l_c));
                         } else {
@@ -83,17 +98,23 @@ impl Component for IndexComponent{
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let callback = self.link.callback(move |_:MouseEvent| PluginState::InitTextArea);
+        let callback_runlua = self.link.callback(move |_:MouseEvent| PluginState::RunLua);
         html!(
             <>
                 <h1>{"Lua on your browser"}</h1>
                 <div>
-                    <button onclick={callback}>{"Run"}</button>
+                    <button onclick={callback_runlua}>{"Run"}</button>
                 </div>
                 <div>
                     <textarea id={"lua_code_area"} value={r#"print(os.time())
 return 1,2,3
 "#}></textarea>
                 </div>
+                <pre> // stdout area
+                    {
+                        format!("{}",*self.stdout.lock().unwrap())
+                    }
+                </pre>
                 <div>
                     <a href="https://github.com/Tom-game-project/lua_on_your_browser">{"Github"}</a>
                 </div>
